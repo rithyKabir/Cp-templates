@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector <int> v;
+
+
+  int maxSum()
+{
+    int max_so_far = v[0];
+    int current_max = v[0];
+    for(int i=1; i<v.size(); i++)
+    {
+        current_max = max(v[i],current_max+v[i]);
+        max_so_far = max(current_max,max_so_far);
+    }
+
+    return max_so_far;
+}
+
+
+
+int main()
+{
+    int n, input[101][101],sum,ans=-99999;
+
+    while(scanf("%d",&n)==1)
+    {
+        for(int i=0; i<n; i++)
+            for(int j=0; j<n; j++)
+                cin >> input[i][j];
+
+        ans=-99999;
+        for(int left=0; left<n; left++)
+        {
+
+            v.clear();
+            for(int i=0; i<n; i++)
+                v.push_back(input[i][left]);
+            sum = maxSum();
+            ans = max(ans,sum);
+            for(int right= left+1; right<n; right++)
+            {
+                 for(int i=0; i<n; i++)
+                 {
+                      v[i]+=input[i][right];
+                 }
+                    sum = maxSum();
+                     ans = max(ans,sum);
+            }
+        }
+        cout<<ans<<endl;
+        v.clear();
+    }
+}

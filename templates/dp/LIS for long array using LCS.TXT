@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll t, n;
+vector <ll> v1,v2;
+map<ll,ll> mp;
+void findLIS()
+{
+    set <ll> s;
+    set <ll> :: iterator itr;
+    for(int i=0; i<v2.size();i++)
+    {
+        s.insert(v2[i]);
+        itr = s.find(v2[i]);
+        itr++;
+        if(itr!=s.end())
+            s.erase(itr);
+    }
+    cout<<s.size()<<endl;
+}
+int main()
+{
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        v1.resize(n);
+        v2.resize(n);
+        for(int i=0; i<n; i++)
+        {
+             cin>>v1[i];
+             mp[v1[i]]=i;
+        }
+
+        for(int i=0; i<n;i++)
+        {
+               cin>>v2[i];
+               if(mp.count(v2[i])!=0)
+                    v2[i]=mp[v2[i]];
+        }
+         findLIS();
+         mp.clear();
+
+    }
+}

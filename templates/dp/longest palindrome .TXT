@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+//SET PRECIOSION   cout << fixed ;  cout << setprecision(n) << ans << endl;
+#define ll long long
+#define sz(v) ((int)(v).size())
+#define all(v) (v).begin(), (v).end()
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+vector <ll> v;
+ll x,y,z,a,b,c,sum,ans,total,t,cnt,n,m,k,p,kase;
+string s1,s2;
+ll dp[1010][1010];
+set<ll> s;
+map<ll,ll> :: iterator itr1, ptr1;
+set<ll> :: iterator itr, ptr;
+// size of the longest palindrome that can be made
+ll findAns(ll x, ll y)
+{
+
+    if(x==y)
+        return 1;
+   if(s1[x]==s1[y] && x+1==y)
+    return 2;
+
+    if(dp[x][y]!=-1)
+        return dp[x][y];
+    if(s1[x]==s1[y])
+        return dp[x][y] = 2+findAns(x+1, y-1);
+    ll ans1 = findAns(x+1, y);
+    ll ans2 = findAns(x, y-1);
+    return dp[x][y] = max(ans1,ans2);
+}
+
+int main()
+{
+	FAST;
+	cin>>t;
+	while(t--)
+    {
+        cnt++;
+        cin>>s1;
+        memset(dp,-1,sizeof(dp));
+        cout<<"Case "<<cnt<<": ";
+        cout<<s1.size()-findAns(0,s1.size()-1)<<endl;
+    }
+	//clear vectors and maps you idiot
+	// check array size dumb
+	// use long long instead of int too
+	return 0;
+}
+

@@ -1,0 +1,204 @@
+#include <bits/stdc++.h>
+using namespace std;
+//SET PRECIOSION   cout << fixed ;  cout << setprecision(n) << ans << endl;
+#define ll long long
+#define pair<ll,ll> PAIR
+#define endl "\n"
+#define mod 1000000007
+#define sz(v) ((int)(v).size())
+#define all(v) (v).begin(), (v).end()
+#define pb push_back
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+ll SET(ll n, ll pos)
+{
+    return n = n | (1 << pos );
+}
+ll RESET(ll n, ll pos)
+{
+    return n = n & ~(1<<pos);
+}
+bool CHECK(ll n, ll pos)
+{
+    return (bool) (n & (1<<pos));
+}
+vector <ll> v;
+ll x,y,z,a,b,c,sum,ans,total,t,cnt,n,m,k,p,q,r,l,w,right,left,row,col,kase;
+string s1,s2;
+map<ll,ll> mp;
+set<ll> s;
+map<ll,ll> :: iterator itr1, ptr1;
+set<ll> :: iterator itr, ptr;
+struct point
+{
+
+    ll x, y;
+    point() {}
+    point(ll _x, ll _y)
+    {
+        x = _x;
+        y = _y;
+    }
+
+};
+ll orientation( point p, point q, point r)
+{
+    ll val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+    if(val == 0)
+        return 0;
+    if(val<0)
+        return 2; // counter clockwise
+
+    return 1; // clockwise
+}
+
+ll distance(point p1, point p2)
+{
+    return (p1.x - p2.x)*(p1.x - p2.x) +
+           (p1.y - p2.y)*(p1.y - p2.y);
+}
+
+point nextToTop(stack<point> &S)
+{
+    point p = S.top();
+    S.pop();
+    point res = S.top();
+    S.push(p);
+    return res;
+}
+point p0;
+
+int compare(const void *vp1, const void *vp2)
+{
+point *p1 = (point *)vp1;
+point *p2 = (point *)vp2;
+
+// Find orientation
+ll o = orientation(p0, *p1, *p2);
+if (o == 0)
+	return (distance(p0, *p2) >= distance(p0, *p1))? -1 : 1;
+
+return (o == 2)? -1: 1;
+}
+vector<point> points;
+
+void swapPoint(point &p1, point &p2)
+{
+    point temp = p1;
+    p1 = p2;
+    p2 = temp;
+}
+void convexHull()
+{
+    ll minY = points[0].y;
+    ll mn = 0;
+    for(ll i=1; i<n; i++)
+    {
+        y = points[i].y;
+        if((y<minY) || (y == minY && points[mn].x > points[i].x))
+        {
+            minY = y;
+            mn = i;
+        }
+    }
+
+    swapPoint(points[0], points[mn]);
+    p0 = points[0];
+
+    qsort(&points[1], n-1, sizeof(point), compare);
+
+    ll m = 1; // 1 cause p0 exists
+
+    for(ll i=1; i<n; i++)
+    {
+        while (i < n-1 && orientation(p0, points[i],points[i+1]) == 0)
+        {
+              i++;
+        }
+        points[m] = points[i];
+        m++;
+    }
+
+    if (m < 3)
+    {
+        cout<<0<<endl;
+        return; // convex hull not possible
+    }
+
+    stack<point> S;
+   S.push(points[0]);
+   S.push(points[1]);
+   S.push(points[2]);
+
+    ll ind = 0;
+    for(ll i=3; i<m; i++)
+    {
+
+      while (S.size()>1 && orientation(nextToTop(S), S.top(), points[i]) != 2)
+         S.pop();
+      S.push(points[i]);
+    }
+
+    /// Stack contains the resulting points now yee
+
+    deque<point>ans;
+    ll minix = INT_MAX;
+    while (!S.empty())
+   {
+       point p = S.top();
+       ans.pb(p);
+       S.pop();
+   }
+
+    for(ll i=0; i<ans.size(); i++)
+    {
+        if(ans[i].x<minix)
+        {
+            ind = i;
+            minix = ans[i].x;
+        }
+        else if(ans[i].x == minix)
+        {
+            if(ans[i].y > ans[ind].y )
+            {
+                    ind = i;
+            }
+        }
+    }
+    reverse(all(ans));
+   cout<<ans.size()<<endl;
+   for(ll i = ind; i<ans.size(); i++)
+   {
+
+       cout<<ans[i].x<<" "<<ans[i].y<<endl;
+
+   }
+
+    for(ll i = 0; i<ind; i++)
+   {
+
+       cout<<ans[i].x<<" "<<ans[i].y<<endl;
+
+   }
+
+}
+
+int main()
+{
+    ///Peace be with you.
+    FAST;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        points.clear();
+        char z;
+        for(ll i=0; i<n; i++)
+        {
+            cin>>x>>y;
+            points.pb(point(x,y));
+        }
+        convexHull();
+    }
+
+    return 0;
+}

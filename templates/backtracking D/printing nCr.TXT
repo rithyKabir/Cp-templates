@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+//SET PRECIOSION   cout << fixed ;  cout << setprecision(n) << ans << endl;
+#define ll long long
+#define sz(v) ((int)(v).size())
+#define all(v) (v).begin(), (v).end()
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+vector <ll> v;
+ll x,y,z,a,b,c,sum,ans,total,t,cnt,n,m,k,p,kase;
+bool use[35];
+string s1,s2;
+map<ll,ll> mp;
+set<string> s;
+map<ll,ll> :: iterator itr1, ptr1;
+set<string> :: iterator itr, ptr;
+void combination(ll _at)
+{
+    if(s2.size()==k)
+    {
+        cout<<s2<<endl;
+        return;
+    }
+
+    for(int i=_at; i<n; i++)
+    {
+        if(!use[i])
+        {
+             s2.push_back(s1[i]);
+             use[i]=true;
+             combination(i+1);
+             use[i]=false;
+             s2.pop_back();
+        }
+        while(s1[i]==s1[i+1] && i<n-1)
+            i++;
+    }
+
+}
+int main()
+{
+
+	while(cin>>s1>>k)
+    {
+        n = s1.size();
+        memset(use,false,sizeof(use));
+        s2.clear();
+        sort(s1.begin(),s1.end());
+        combination(0);
+
+    }
+	//clear vectors and maps you idiot
+	// check array size dumb
+	// use long long instead of int too
+	return 0;
+}
